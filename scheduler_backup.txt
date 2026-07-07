@@ -1,0 +1,25 @@
+Created At: 2026-07-02T17:22:31Z
+Completed At: 2026-07-02T17:22:31Z
+File Path: `file:///c:/Users/HP/OneDrive/Desktop/Levitate/backend/app/services/scheduler.py`
+Total Lines: 449
+Total Bytes: 20181
+Showing lines 130 to 146
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+130:             continue
+131:         overlap = False
+132:         for b_start, b_end in busy_slots:
+133:             buffered_start = b_start - datetime.timedelta(minutes=30)
+134:             buffered_end = b_end + datetime.timedelta(minutes=30)
+135:             if max(candidate_start, buffered_start) < min(candidate_end, buffered_end):
+136:                 overlap = True
+137:                 break
+138:         if not overlap:
+139:             return candidate_start, candidate_end
+140:         candidate_start += datetime.timedelta(minutes=15)
+141:         
+142:     return None
+143: 
+144: def schedule_all_tasks(user_id: int, db: Session, current_time: datetime.datetime):
+145:     """
+146:     Comprehensive Scheduling & Allocation engine:
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

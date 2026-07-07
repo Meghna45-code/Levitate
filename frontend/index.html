@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levitate — Voice-Activated Predictive Scheduler</title>
+    <!-- Modern Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ionicons for Premium Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Background Ambient Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <div class="app-container">
+        <!-- Floating Header -->
+        <header class="app-header">
+            <div class="logo-wrapper">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="app-logo">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#D3968C" />
+                            <stop offset="50%" stop-color="#839958" />
+                            <stop offset="100%" stop-color="#105666" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path d="M50 15 L80 45 L65 45 L65 75 L35 75 L35 45 L20 45 Z" fill="url(#logoGrad)" filter="url(#glow)"/>
+                    <circle cx="50" cy="50" r="8" fill="#ffffff" />
+                </svg>
+                <span class="brand-name">Levitate</span>
+            </div>
+            <span class="header-status">
+                <span class="status-dot"></span> API Connected
+            </span>
+        </header>
+
+        <!-- MAIN DYNAMIC VIEWS -->
+        <main class="main-content">
+            
+            <!-- VIEW 0: AUTH CHOICE -->
+            <section id="view-choice" class="auth-card glassmorphism active">
+                <div class="card-header">
+                    <h2>Welcome to Levitate</h2>
+                    <p>Experience intelligent scheduling. Voice-activated task allocation with cognitive fatigue decay and smart rescheduling.</p>
+                </div>
+                <div class="auth-buttons">
+                    <button id="btn-goto-login" class="btn btn-primary">
+                        <span class="btn-text">Sign In to Account</span>
+                        <ion-icon name="log-in-outline"></ion-icon>
+                    </button>
+                    <button id="btn-goto-signup" class="btn btn-secondary">
+                        <span class="btn-text">Create New Profile</span>
+                        <ion-icon name="person-add-outline"></ion-icon>
+                    </button>
+                </div>
+            </section>
+
+            <!-- VIEW 1: LOGIN FORM -->
+            <section id="view-login" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your details to access your predictive schedule</p>
+                </div>
+                <form id="form-login" class="auth-form">
+                    <div class="input-group">
+                        <label for="login-username">Username or Email</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+                            <input type="text" id="login-username" placeholder="john_doe or john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="login-password">Password</label>
+                            <a href="#" id="link-forgot-password" class="forgot-link">Forgot Password?</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                            <input type="password" id="login-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span class="btn-text">Log In</span>
+                        <ion-icon name="arrow-forward-outline"></ion-icon>
+                    </button>
+                </form>
+                <div class="card-footer">
+                    <p>Don't have an account? <a href="#" id="link-goto-signup">Sign Up</a></p>
+                    <a href="#" class="back-link btn-back-choice"><ion-icon name="chevron-back-outline"></ion-icon> Back</a>
+                </div>
+            </section>
+
+            <!-- VIEW 2: SIGN UP FORM -->
+            <section id="view-signup" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Create Profile</h2>
+                    <p>Start managing your cognitive load automatically</p>
+                </div>
+                <form id="form-signup" class="auth-form">
+                    <div class="input-group">
+                        <label for="signup-username">Username</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="at-outline" class="input-icon"></ion-icon>
+                            <input type="text" id="signup-username" placeholder="john_doe" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                            <input type="email" id="signup-email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                            <input type="password" id="signup-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span class="btn-text">Get Verification PIN</span>
+                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    </button>
+                </form>
+                <div class="card-footer">
+                    <p>Already have an account? <a href="#" id="link-goto-login">Log In</a></p>
+                    <a href="#" class="back-link btn-back-choice"><ion-icon name="chevron-back-outline"></ion-icon> Back</a>
+                </div>
+            </section>
+
+            <!-- VIEW 3: OTP VERIFICATION -->
+            <section id="view-otp" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Verify Email</h2>
+                    <p>We've generated a 6-digit verification PIN for your account. Enter it below to verify.</p>
+                    <div class="email-display" id="otp-email-display">john@example.com</div>
+                </div>
+                <form id="form-otp" class="auth-form">
+                    <div class="input-group">
+                        <label for="otp-code">6-Digit PIN</label>
+                        <div class="otp-input-container">
+                            <input type="text" id="otp-code" maxlength="6" placeholder="000000" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <!-- Live demo OTP display badge -->
+                    <div id="demo-otp-box" class="demo-otp-badge hidden">
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                        <span>Demo OTP: <strong id="demo-otp-value">000000</strong> (Returned via API)</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span class="btn-text">Verify & Activate Profile</span>
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    </button>
+                </form>
+                <div class="card-footer">
+                    <p class="timer-text">Resend code available in <span id="otp-timer">02:00</span></p>
+                    <a href="#" class="back-link" id="btn-back-signup"><ion-icon name="chevron-back-outline"></ion-icon> Back to Signup</a>
+                </div>
+            </section>
+
+            <!-- VIEW 4: FORGOT PASSWORD REQUEST -->
+            <section id="view-forgot" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Forgot Password</h2>
+                    <p>Enter your email address to request a password reset PIN</p>
+                </div>
+                <form id="form-forgot" class="auth-form">
+                    <div class="input-group">
+                        <label for="forgot-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                            <input type="email" id="forgot-email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span class="btn-text">Get Reset PIN</span>
+                        <ion-icon name="send-outline"></ion-icon>
+                    </button>
+                </form>
+                <div class="card-footer">
+                    <a href="#" class="back-link btn-back-login"><ion-icon name="chevron-back-outline"></ion-icon> Back to Login</a>
+                </div>
+            </section>
+
+            <!-- VIEW 5: RESET PASSWORD FORM -->
+            <section id="view-reset" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Reset Password</h2>
+                    <p>Enter the reset code sent to your email and set your new password</p>
+                </div>
+                <form id="form-reset" class="auth-form">
+                    <div class="input-group">
+                        <label for="reset-otp">6-Digit PIN</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="key-outline" class="input-icon"></ion-icon>
+                            <input type="text" id="reset-otp" maxlength="6" placeholder="000000" required>
+                        </div>
+                    </div>
+                    <!-- Live demo reset OTP display badge -->
+                    <div id="demo-reset-otp-box" class="demo-otp-badge hidden">
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                        <span>Demo OTP: <strong id="demo-reset-otp-value">000000</strong> (Returned via API)</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="reset-password">New Password</label>
+                        <div class="input-wrapper">
+                            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                            <input type="password" id="reset-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">
+                        <span class="btn-text">Update Password</span>
+                        <ion-icon name="sync-outline"></ion-icon>
+                    </button>
+                </form>
+                <div class="card-footer">
+                    <a href="#" class="back-link btn-back-login"><ion-icon name="chevron-back-outline"></ion-icon> Cancel</a>
+                </div>
+            </section>
+
+            <!-- VIEW 6: GOOGLE CALENDAR SYNC -->
+            <section id="view-sync" class="auth-card glassmorphism hidden">
+                <div class="card-header">
+                    <h2>Connect Google Calendar</h2>
+                    <p>Integrate your calendar to enable advanced cognitive load balancing and automatic double-booking prevention.</p>
+                </div>
+                <div class="sync-illustration">
+                    <div class="sync-icon-container">
+                        <ion-icon name="logo-google" class="g-icon"></ion-icon>
+                        <div class="sync-arrows">
+                            <div class="arrow-bounce left-right"></div>
+                            <div class="arrow-bounce right-left"></div>
+                        </div>
+                        <ion-icon name="calendar-outline" class="c-icon"></ion-icon>
+                    </div>
+                </div>
+                <div class="sync-control">
+                    <label class="switch-container">
+                        <span class="switch-label">Sync Google Calendar events automatically</span>
+                        <div class="switch">
+                            <input type="checkbox" id="sync-toggle" checked>
+                            <span class="slider round"></span>
+                        </div>
+                    </label>
+                </div>
+                <div class="auth-buttons">
+                    <button id="btn-confirm-sync" class="btn btn-primary">
+                        <span class="btn-text" id="sync-btn-text">Authenticate Calendar</span>
+                        <ion-icon name="logo-google"></ion-icon>
+                    </button>
+                    <button id="btn-skip-sync" class="btn btn-secondary">
+                        <span class="btn-text">Skip & Continue</span>
+                        <ion-icon name="arrow-forward-outline"></ion-icon>
+                    </button>
+                </div>
+            </section>
+
+            <!-- VIEW 7: APP DASHBOARD / WORKSPACE -->
+            <section id="view-dashboard" class="dashboard-container hidden view-chat-active">
+                
+                <!-- Extreme Left Navigation Sidebar -->
+                <nav class="nav-sidebar glassmorphism">
+                    <div class="nav-top">
+                        <div class="profile-icon" id="nav-profile-btn" title="User Profile">
+                            <span id="nav-avatar-initial">U</span>
+                            <img id="nav-avatar-img" class="hidden" alt="Profile avatar">
+                        </div>
+                        <!-- Profile Details Popup -->
+                        <div id="profile-popup" class="profile-popup-card glassmorphism hidden">
+                            <div class="profile-popup-header">
+                                <div class="avatar-upload" id="profile-avatar-upload" title="Click to Upload Photo">
+                                    <span id="popup-avatar-initial">U</span>
+                                    <img id="popup-avatar-img" class="hidden" src="" alt="Profile Photo">
+                                    <div class="avatar-overlay"><ion-icon name="camera-outline"></ion-icon></div>
+                                </div>
+                                <input type="file" id="avatar-file-input" accept="image/*" class="hidden">
+                            </div>
+                            <div class="profile-popup-body">
+                                <h4 id="profile-popup-username">Username</h4>
+                                <p id="profile-popup-email">user@example.com</p>
+                                <hr class="profile-divider">
+                                <div class="profile-sync-section">
+                                    <div class="sync-status-row">
+                                        <span class="sync-label">Google Sync</span>
+                                        <span id="popup-cal-status" class="badge badge-disconnected">Offline</span>
+                                    </div>
+                                    <div class="switch-row">
+                                        <span class="switch-desc">Auto-sync tasks</span>
+                                        <div class="switch">
+                                            <input type="checkbox" id="sync-toggle-popup" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                    <button id="btn-popup-connect-calendar" class="btn btn-primary btn-small full-width">
+                                        <span class="btn-text">Connect Calendar</span>
+                                        <ion-icon name="logo-google"></ion-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Dropdown Card -->
+                    <div id="notifications-popup" class="notifications-popup-card glassmorphism hidden">
+                        <div class="notifications-popup-header">
+                            <h3>Notifications</h3>
+                            <button id="btn-clear-notifications" class="btn btn-text btn-small">Mark all read</button>
+                        </div>
+                        <div class="notifications-popup-body" id="notifications-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="nav-menu">
+                        <button id="nav-btn-chat" class="nav-item active" title="Conversational Chat Scheduler">
+                            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+                        </button>
+                        <button id="nav-btn-dashboard" class="nav-item" title="Daily Scheduler Dashboard">
+                            <ion-icon name="grid-outline"></ion-icon>
+                        </button>
+                        <button id="nav-btn-calendar" class="nav-item" title="Monthly Calendar View">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                        </button>
+                        <button id="nav-btn-pending" class="nav-item" title="Pending & Overdue Tasks">
+                            <ion-icon name="hourglass-outline"></ion-icon>
+                        </button>
+                        <button id="nav-btn-stats" class="nav-item" title="Performance Statistics">
+                            <ion-icon name="stats-chart-outline"></ion-icon>
+                        </button>
+                        <button id="nav-btn-notifications" class="nav-item" title="Notifications Center">
+                            <ion-icon name="notifications-outline"></ion-icon>
+                            <span id="nav-notifications-badge" class="badge-count hidden">0</span>
+                        </button>
+                        <button id="nav-btn-gcal" class="nav-item" title="Open Google Calendar">
+                            <ion-icon name="logo-google"></ion-icon>
+                        </button>
+                    </div>
+                    
+                    <div class="nav-bottom">
+                        <button id="nav-btn-logout" class="nav-item btn-logout" title="Sign Out">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </button>
+                    </div>
+                </nav>
+
+                <!-- Workspace Dynamic Area -->
+                <div class="dash-workspace">
+                    
+                    <!-- Panel 1: Conversational Chat -->
+                    <div class="dash-chat glassmorphism" id="dash-chat-panel">
+                        <div class="chat-header">
+                            <h4>AI Assistant</h4>
+                            <span class="chat-subtitle">Type or speak your commands</span>
+                        </div>
+                        <div class="chat-log" id="chat-log">
+                            <div class="chat-bubble bot-message">
+                                <p>Hi! I'm Levitate. How can I help you manage your day? Try typing <em>"Schedule a team sync tomorrow at 2 PM"</em> or tap the mic to speak.</p>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <button id="btn-mic" class="btn-mic" title="Record Voice Command">
+                                <ion-icon name="mic-outline" id="mic-icon"></ion-icon>
+                            </button>
+                            <input type="text" id="chat-input" placeholder="Type a scheduling command..." autocomplete="off">
+                            <button id="btn-send-chat" class="btn-send-chat" title="Send Command">
+                                <ion-icon name="send-outline"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Stats & Task Allocations -->
+                    <div class="dash-content" id="dash-details-panel">
+                        <!-- Dashboard Statistics -->
+                        <div class="stats-row">
+                            <div class="stat-card glassmorphism">
+                                <div class="stat-icon icon-tasks">
+                                    <ion-icon name="list-outline"></ion-icon>
+                                </div>
+                                <div class="stat-data">
+                                    <span class="stat-value" id="stat-total-tasks">0</span>
+                                    <span class="stat-label">Active Tasks</span>
+                                </div>
+                            </div>
+                            <div class="stat-card glassmorphism">
+                                <div class="stat-icon icon-load">
+                                    <ion-icon name="speedometer-outline"></ion-icon>
+                                </div>
+                                <div class="stat-data">
+                                    <span class="stat-value" id="stat-cognitive-load">Optimal</span>
+                                    <span class="stat-label">Cognitive Fatigue</span>
+                                </div>
+                            </div>
+                            <div class="stat-card glassmorphism">
+                                <div class="stat-icon icon-overdue">
+                                    <ion-icon name="alert-circle-outline"></ion-icon>
+                                </div>
+                                <div class="stat-data">
+                                    <span class="stat-value" id="stat-overdue-tasks">0</span>
+                                    <span class="stat-label">Overdue Tasks</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tasks List Panel (Daily Timeline) -->
+                        <div class="panel glassmorphism" id="panel-timeline-scheduler">
+                            <div class="panel-header">
+                                <div class="timeline-title-nav">
+                                    <button id="timeline-btn-prev" class="btn-icon" title="Previous Day">
+                                        <ion-icon name="chevron-back-outline"></ion-icon>
+                                    </button>
+                                    <h3 id="timeline-date-title">Date</h3>
+                                    <button id="timeline-btn-next" class="btn-icon" title="Next Day">
+                                        <ion-icon name="chevron-forward-outline"></ion-icon>
+                                    </button>
+                                </div>
+                                <button id="btn-refresh-tasks" class="btn btn-icon" title="Refresh Schedule">
+                                    <ion-icon name="refresh-outline"></ion-icon>
+                                </button>
+                            </div>
+                            <!-- Daily Cognitive Exhaust Bar -->
+                            <div class="cognitive-exhaust-container" id="cognitive-exhaust-container">
+                                <div class="exhaust-info-row">
+                                    <span class="exhaust-label">
+                                        <ion-icon name="speedometer-outline"></ion-icon>
+                                        Daily Cognitive Fatigue: <strong id="cognitive-exhaust-level">Low</strong>
+                                    </span>
+                                    <span class="exhaust-value" id="cognitive-exhaust-score">0.0 / 6.0</span>
+                                </div>
+                                <div class="exhaust-bar-bg">
+                                    <div class="exhaust-bar-fill" id="cognitive-exhaust-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="panel-content timeline-scroll">
+                                <div id="timeline-container" class="timeline-container">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending & Overdue Tasks Panel -->
+                        <div class="panel glassmorphism" id="panel-pending-tasks">
+                            <div class="panel-header">
+                                <h3>Pending & Overdue Tasks</h3>
+                            </div>
+                            <div class="panel-content timeline-scroll">
+                                <div id="pending-tasks-list" class="pending-tasks-list-container">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: Monthly Calendar -->
+                    <div class="dash-calendar glassmorphism" id="dash-calendar-panel">
+                        <div class="calendar-header">
+                            <div class="calendar-title-nav">
+                                <button id="cal-btn-prev" class="btn-icon" title="Previous Month">
+                                    <ion-icon name="chevron-back-outline"></ion-icon>
+                                </button>
+                                <h3 id="cal-month-year">Month Year</h3>
+                                <button id="cal-btn-next" class="btn-icon" title="Next Month">
+                                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                                </button>
+                            </div>
+                            <span class="badge badge-connected" id="cal-integration-status">
+                                <span class="status-dot"></span> Calendar Connected
+                            </span>
+                        </div>
+                        <div class="calendar-grid-header">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- Generated Dynamically -->
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Calendar Event Details Modal -->
+                <div id="cal-event-modal" class="modal-overlay hidden">
+                    <div class="modal-content glassmorphism">
+                        <div class="modal-header">
+                            <h3 id="modal-task-title">Task Title</h3>
+                            <button id="btn-close-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-info-row">
+                                <span class="modal-label">Priority</span>
+                                <span id="modal-task-priority" class="badge">Medium</span>
+                            </div>
+                            <div class="modal-info-row">
+                                <span class="modal-label">Status</span>
+                                <span id="modal-task-status" class="task-status-badge">SCHEDULED</span>
+                            </div>
+                            <div class="modal-info-row">
+                                <span class="modal-label">Scheduled Time</span>
+                                <span id="modal-task-time">Time</span>
+                            </div>
+                            <div class="modal-info-row">
+                                <span class="modal-label">Duration</span>
+                                <span id="modal-task-duration">60 minutes</span>
+                            </div>
+                            
+                            <!-- Quick Reschedule Editor Section -->
+                            <div class="reschedule-section">
+                                <div class="reschedule-header">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                    <span>Quick Reschedule Editor</span>
+                                </div>
+                                <div class="reschedule-inputs">
+                                    <div class="modal-edit-group">
+                                        <label for="modal-edit-deadline">New Date & Time</label>
+                                        <input type="datetime-local" id="modal-edit-deadline" class="modal-input">
+                                    </div>
+                                    <div class="modal-edit-row">
+                                        <div class="modal-edit-group">
+                                            <label for="modal-edit-priority">Priority</label>
+                                            <select id="modal-edit-priority" class="modal-input">
+                                                <option value="High">High</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Low">Low</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-edit-group">
+                                            <label for="modal-edit-duration">Duration (mins)</label>
+                                            <input type="number" id="modal-edit-duration" class="modal-input" min="5" max="1440">
+                                        </div>
+                                    </div>
+                                    <button id="modal-btn-reschedule" class="btn btn-secondary btn-reschedule-save">
+                                        <ion-icon name="refresh-circle-outline"></ion-icon> Reschedule Task
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Rescheduling History Timeline Section -->
+                            <div id="modal-reschedule-logs-section" class="reschedule-logs-section hidden">
+                                <div class="modal-divider"></div>
+                                <div class="logs-header">
+                                    <ion-icon name="time-outline"></ion-icon>
+                                    <span>Rescheduling History</span>
+                                </div>
+                                <div id="modal-reschedule-logs-list" class="logs-timeline-list">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="modal-btn-delete" class="btn btn-secondary btn-danger">
+                                <ion-icon name="trash-outline"></ion-icon> Delete Task
+                            </button>
+                            <button id="modal-btn-complete" class="btn btn-primary">
+                                <ion-icon name="checkmark-outline"></ion-icon> Mark Completed
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Tasks popover modal -->
+                <div id="cal-day-tasks-modal" class="modal-overlay hidden">
+                    <div class="modal-content glassmorphism">
+                        <div class="modal-header">
+                            <h3 id="day-tasks-title">Tasks for Day</h3>
+                            <button id="btn-close-day-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="day-tasks-list" class="day-tasks-list-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Summary Modal -->
+                <div id="cal-stats-modal" class="modal-overlay hidden">
+                    <div class="modal-content glassmorphism">
+                        <div class="modal-header">
+                            <h3>Performance & Productivity Stats</h3>
+                            <button id="btn-close-stats-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="stats-pop-grid">
+                                <div class="stat-pop-card">
+                                    <span class="stat-pop-label">Completed On Time</span>
+                                    <span id="stat-pop-completed-on-time" class="stat-pop-value">0</span>
+                                </div>
+                                <div class="stat-pop-card">
+                                    <span class="stat-pop-label">Delegated Tasks</span>
+                                    <span id="stat-pop-delegated" class="stat-pop-value">0</span>
+                                </div>
+                                <div class="stat-pop-card">
+                                    <span class="stat-pop-label">Never Completed</span>
+                                    <span id="stat-pop-never-completed" class="stat-pop-value">0</span>
+                                </div>
+                                <div class="stat-pop-card highlight-card">
+                                    <span class="stat-pop-label">Productivity Rating</span>
+                                    <span id="stat-pop-productivity" class="stat-pop-value">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Dynamic Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
