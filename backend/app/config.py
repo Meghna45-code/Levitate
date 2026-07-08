@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dotenv_path = os.path.join(backend_dir, ".env")
 if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
+    load_dotenv(dotenv_path, override=True)
 else:
-    load_dotenv()  # Fallback to system env or root .env
+    load_dotenv(override=True)  # Fallback to system env or root .env
 
 class Settings:
     PROJECT_NAME: str = "Levitate Voice Scheduling Assistant"
@@ -18,5 +18,13 @@ class Settings:
     GOOGLE_REDIRECT_URI: str = os.getenv("GOOGLE_REDIRECT_URI", "http://localhost:8000/api/auth/google/callback")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "super-secret-key-change-in-prod")
     PENDING_TIMEOUT_SECONDS: int = int(os.getenv("PENDING_TIMEOUT_SECONDS", "3600"))
+    
+    # SMTP Email Configuration
+    SEND_REAL_EMAILS: bool = os.getenv("SEND_REAL_EMAILS", "False").lower() in ("true", "1", "yes")
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USERNAME: str = os.getenv("SMTP_USERNAME", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    SMTP_SENDER: str = os.getenv("SMTP_SENDER", "")
 
 settings = Settings()

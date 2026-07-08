@@ -306,20 +306,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Sidebar Calendar Connect button
-    document.getElementById('btn-dash-connect-calendar').addEventListener('click', async () => {
-        try {
-            showToast('Initiating Google Auth...', 'info');
-            const res = await fetch(`${API_BASE}/api/auth/google`);
-            const data = await res.json();
-            if (res.ok && data.authorization_url) {
-                window.location.href = data.authorization_url;
-            } else {
-                throw new Error();
+    const btnDashConnectCalendar = document.getElementById('btn-dash-connect-calendar');
+    if (btnDashConnectCalendar) {
+        btnDashConnectCalendar.addEventListener('click', async () => {
+            try {
+                showToast('Initiating Google Auth...', 'info');
+                const res = await fetch(`${API_BASE}/api/auth/google`);
+                const data = await res.json();
+                if (res.ok && data.authorization_url) {
+                    window.location.href = data.authorization_url;
+                } else {
+                    throw new Error();
+                }
+            } catch (e) {
+                showToast('Failed to connect to Google API', 'error');
             }
-        } catch (e) {
-            showToast('Failed to connect to Google API', 'error');
-        }
-    });
+        });
+    }
 
     // Dashboard Data Loading
     async function loadDashboardData() {

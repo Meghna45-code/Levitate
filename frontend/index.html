@@ -11,7 +11,7 @@
     <!-- Ionicons for Premium Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=1.0.2">
 </head>
 <body>
     <!-- Background Ambient Glows -->
@@ -491,139 +491,138 @@
 
 
                 </div>
-
-                <!-- Calendar Event Details Modal -->
-                <div id="cal-event-modal" class="modal-overlay hidden">
-                    <div class="modal-content glassmorphism">
-                        <div class="modal-header">
-                            <h3 id="modal-task-title">Task Title</h3>
-                            <button id="btn-close-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="modal-info-row">
-                                <span class="modal-label">Priority</span>
-                                <span id="modal-task-priority" class="badge">Medium</span>
-                            </div>
-                            <div class="modal-info-row">
-                                <span class="modal-label">Status</span>
-                                <span id="modal-task-status" class="task-status-badge">SCHEDULED</span>
-                            </div>
-                            <div class="modal-info-row">
-                                <span class="modal-label">Scheduled Time</span>
-                                <span id="modal-task-time">Time</span>
-                            </div>
-                            <div class="modal-info-row">
-                                <span class="modal-label">Duration</span>
-                                <span id="modal-task-duration">60 minutes</span>
-                            </div>
-                            
-                            <!-- Quick Reschedule Editor Section -->
-                            <div class="reschedule-section">
-                                <div class="reschedule-header">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                    <span>Quick Reschedule Editor</span>
-                                </div>
-                                <div class="reschedule-inputs">
-                                    <div class="modal-edit-group">
-                                        <label for="modal-edit-deadline">New Date & Time</label>
-                                        <input type="datetime-local" id="modal-edit-deadline" class="modal-input">
-                                    </div>
-                                    <div class="modal-edit-row">
-                                        <div class="modal-edit-group">
-                                            <label for="modal-edit-priority">Priority</label>
-                                            <select id="modal-edit-priority" class="modal-input">
-                                                <option value="High">High</option>
-                                                <option value="Medium">Medium</option>
-                                                <option value="Low">Low</option>
-                                            </select>
-                                        </div>
-                                        <div class="modal-edit-group">
-                                            <label for="modal-edit-duration">Duration (mins)</label>
-                                            <input type="number" id="modal-edit-duration" class="modal-input" min="5" max="1440">
-                                        </div>
-                                    </div>
-                                    <button id="modal-btn-reschedule" class="btn btn-secondary btn-reschedule-save">
-                                        <ion-icon name="refresh-circle-outline"></ion-icon> Reschedule Task
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Rescheduling History Timeline Section -->
-                            <div id="modal-reschedule-logs-section" class="reschedule-logs-section hidden">
-                                <div class="modal-divider"></div>
-                                <div class="logs-header">
-                                    <ion-icon name="time-outline"></ion-icon>
-                                    <span>Rescheduling History</span>
-                                </div>
-                                <div id="modal-reschedule-logs-list" class="logs-timeline-list">
-                                    <!-- Rendered dynamically -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="modal-btn-delete" class="btn btn-secondary btn-danger">
-                                <ion-icon name="trash-outline"></ion-icon> Delete Task
-                            </button>
-                            <button id="modal-btn-complete" class="btn btn-primary">
-                                <ion-icon name="checkmark-outline"></ion-icon> Mark Completed
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Daily Tasks popover modal -->
-                <div id="cal-day-tasks-modal" class="modal-overlay hidden">
-                    <div class="modal-content glassmorphism">
-                        <div class="modal-header">
-                            <h3 id="day-tasks-title">Tasks for Day</h3>
-                            <button id="btn-close-day-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="day-tasks-list" class="day-tasks-list-container">
-                                <!-- Populated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistics Summary Modal -->
-                <div id="cal-stats-modal" class="modal-overlay hidden">
-                    <div class="modal-content glassmorphism">
-                        <div class="modal-header">
-                            <h3>Performance & Productivity Stats</h3>
-                            <button id="btn-close-stats-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="stats-pop-grid">
-                                <div class="stat-pop-card">
-                                    <span class="stat-pop-label">Completed On Time</span>
-                                    <span id="stat-pop-completed-on-time" class="stat-pop-value">0</span>
-                                </div>
-                                <div class="stat-pop-card">
-                                    <span class="stat-pop-label">Delegated Tasks</span>
-                                    <span id="stat-pop-delegated" class="stat-pop-value">0</span>
-                                </div>
-                                <div class="stat-pop-card">
-                                    <span class="stat-pop-label">Never Completed</span>
-                                    <span id="stat-pop-never-completed" class="stat-pop-value">0</span>
-                                </div>
-                                <div class="stat-pop-card highlight-card">
-                                    <span class="stat-pop-label">Productivity Rating</span>
-                                    <span id="stat-pop-productivity" class="stat-pop-value">0%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </section>
 
         </main>
     </div>
 
+    <!-- Calendar Event Details Modal -->
+    <div id="cal-event-modal" class="modal-overlay hidden">
+        <div class="modal-content glassmorphism">
+            <div class="modal-header">
+                <h3 id="modal-task-title">Task Title</h3>
+                <button id="btn-close-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-row">
+                    <span class="modal-label">Priority</span>
+                    <span id="modal-task-priority" class="badge">Medium</span>
+                </div>
+                <div class="modal-info-row">
+                    <span class="modal-label">Status</span>
+                    <span id="modal-task-status" class="task-status-badge">SCHEDULED</span>
+                </div>
+                <div class="modal-info-row">
+                    <span class="modal-label">Scheduled Time</span>
+                    <span id="modal-task-time">Time</span>
+                </div>
+                <div class="modal-info-row">
+                    <span class="modal-label">Duration</span>
+                    <span id="modal-task-duration">60 minutes</span>
+                </div>
+                
+                <!-- Quick Reschedule Editor Section -->
+                <div class="reschedule-section">
+                    <div class="reschedule-header">
+                        <ion-icon name="create-outline"></ion-icon>
+                        <span>Quick Reschedule Editor</span>
+                    </div>
+                    <div class="reschedule-inputs">
+                        <div class="modal-edit-group">
+                            <label for="modal-edit-deadline">New Date & Time</label>
+                            <input type="datetime-local" id="modal-edit-deadline" class="modal-input">
+                        </div>
+                        <div class="modal-edit-row">
+                            <div class="modal-edit-group">
+                                <label for="modal-edit-priority">Priority</label>
+                                <select id="modal-edit-priority" class="modal-input">
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                            <div class="modal-edit-group">
+                                <label for="modal-edit-duration">Duration (mins)</label>
+                                <input type="number" id="modal-edit-duration" class="modal-input" min="5" max="1440">
+                            </div>
+                        </div>
+                        <button id="modal-btn-reschedule" class="btn btn-secondary btn-reschedule-save">
+                            <ion-icon name="refresh-circle-outline"></ion-icon> Reschedule Task
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Rescheduling History Timeline Section -->
+                <div id="modal-reschedule-logs-section" class="reschedule-logs-section hidden">
+                    <div class="modal-divider"></div>
+                    <div class="logs-header">
+                        <ion-icon name="time-outline"></ion-icon>
+                        <span>Rescheduling History</span>
+                    </div>
+                    <div id="modal-reschedule-logs-list" class="logs-timeline-list">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-btn-delete" class="btn btn-secondary btn-danger">
+                    <ion-icon name="trash-outline"></ion-icon> Delete Task
+                </button>
+                <button id="modal-btn-complete" class="btn btn-primary">
+                    <ion-icon name="checkmark-outline"></ion-icon> Mark Completed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Tasks popover modal -->
+    <div id="cal-day-tasks-modal" class="modal-overlay hidden">
+        <div class="modal-content glassmorphism">
+            <div class="modal-header">
+                <h3 id="day-tasks-title">Tasks for Day</h3>
+                <button id="btn-close-day-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="modal-body">
+                <div id="day-tasks-list" class="day-tasks-list-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Summary Modal -->
+    <div id="cal-stats-modal" class="modal-overlay hidden">
+        <div class="modal-content glassmorphism">
+            <div class="modal-header">
+                <h3>Performance & Productivity Stats</h3>
+                <button id="btn-close-stats-modal" class="btn-close" title="Close"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-pop-grid">
+                    <div class="stat-pop-card">
+                        <span class="stat-pop-label">Completed On Time</span>
+                        <span id="stat-pop-completed-on-time" class="stat-pop-value">0</span>
+                    </div>
+                    <div class="stat-pop-card">
+                        <span class="stat-pop-label">Delegated Tasks</span>
+                        <span id="stat-pop-delegated" class="stat-pop-value">0</span>
+                    </div>
+                    <div class="stat-pop-card">
+                        <span class="stat-pop-label">Never Completed</span>
+                        <span id="stat-pop-never-completed" class="stat-pop-value">0</span>
+                    </div>
+                    <div class="stat-pop-card highlight-card">
+                        <span class="stat-pop-label">Productivity Rating</span>
+                        <span id="stat-pop-productivity" class="stat-pop-value">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Dynamic Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=1.0.1"></script>
 </body>
 </html>

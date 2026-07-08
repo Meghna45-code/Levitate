@@ -42,6 +42,14 @@ We have successfully implemented and verified all backend scheduler enhancements
         *   Implemented `POST /api/tasks/{task_id}/voice-respond` voice follow-up response endpoint that transcribes speech input and updates/reschedules the pending task.
 *   **Effect**: Keeps the user's Google Calendar clean and perfectly synchronized with no duplicate or ghost events.
 
+### 5. SMTP Verification & Password Reset Emails
+*   **Files Added/Modified**:
+    *   [backend/.env](file:///c:/Users/HP/OneDrive/Desktop/Levitate/backend/.env): Added SMTP mail configuration keys (`SEND_REAL_EMAILS`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_SENDER`).
+    *   [config.py](file:///c:/Users/HP/OneDrive/Desktop/Levitate/backend/app/config.py): Configuration mappings in `Settings`.
+    *   [email.py](file:///c:/Users/HP/OneDrive/Desktop/Levitate/backend/app/services/email.py): Created the email helper using `smtplib` and `email.mime` modules to build and transmit HTML templates in a background worker.
+    *   [main.py](file:///c:/Users/HP/OneDrive/Desktop/Levitate/backend/app/main.py): Connected background email worker task to signup and forgot password endpoints.
+*   **Effect**: Automatically sends verification/reset PINs to user inbox when SMTP is configured, hiding demo OTP screen badges to preserve production fidelity.
+
 ---
 
 ## Verification Results

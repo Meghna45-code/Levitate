@@ -2454,3 +2454,9 @@ input:checked + .slider:before {
     color: var(--text-secondary);
     line-height: 1.25;
 }
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+

@@ -3,7 +3,7 @@ import datetime
 import asyncio
 import hashlib
 import random
-from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, Query
+from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, Query, BackgroundTasks
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,6 +21,7 @@ from backend.app.services.text_parser import transcribe_audio_bytes, parse_text_
 from backend.app.services.task_extractor import (
     check_if_follow_up_input, extract_and_fill_task, process_follow_up_input, check_pending_tasks
 )
+from backend.app.services.email import send_otp_email_task
 
 # Password hashing helpers using standard library pbkdf2_hmac
 def hash_password(password: str) -> str:
@@ -151,7 +152,7 @@ def read_root():
 # ==================== AUTHENTICATION ENDPOINTS ====================
 
 @app.post("/api/auth/signup")
-def signup(payload: SignupSchema, db: Session = Depends(get_db)):
+def signup(payload: SignupSchema, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     existing_email = db.query(User).filter(User.email == payload.email).first()
     if existing_email:
         raise HTTPException(status_code=400, detail="Email is already registered")
@@ -175,12 +176,20 @@ def signup(payload: SignupSchema, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     
-    return {
+    background_tasks.add_task(send_otp_email_task, payload.email, otp, False)
+    
+    response_data = {
         "status": "success",
-        "message": "Verification OTP sent. For demo/testing, the OTP is returned in this response.",
-        "otp": otp,
         "email": payload.email
     }
+    
+    if settings.SEND_REAL_EMAILS:
+        response_data["message"] = "Verification PIN sent to your email address."
+    else:
+        response_data["message"] = "Verification OTP sent. For demo/testing, the OTP is returned in this response."
+        response_data["otp"] = otp
+        
+    return response_data
 
 @app.post("/api/auth/verify-otp")
 def verify_otp(payload: VerifyOtpSchema, db: Session = Depends(get_db)):
@@ -251,7 +260,7 @@ def get_auth_status(db: Session = Depends(get_db)):
     }
 
 @app.post("/api/auth/forgot-password")
-def forgot_password(payload: ForgotPasswordSchema, db: Session = Depends(get_db)):
+def forgot_password(payload: ForgotPasswordSchema, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email).first()
     if not user:
         raise HTTPException(status_code=404, detail="Email not found")
@@ -261,12 +270,20 @@ def forgot_password(payload: ForgotPasswordSchema, db: Session = Depends(get_db)
     user.otp_expires_at = datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
     db.commit()
     
-    return {
+    background_tasks.add_task(send_otp_email_task, payload.email, otp, True)
+    
+    response_data = {
         "status": "success",
-        "message": "Reset OTP sent. For demo/testing, the OTP is returned in this response.",
-        "otp": otp,
         "email": payload.email
     }
+    
+    if settings.SEND_REAL_EMAILS:
+        response_data["message"] = "Password reset PIN sent to your email address."
+    else:
+        response_data["message"] = "Reset OTP sent. For demo/testing, the OTP is returned in this response."
+        response_data["otp"] = otp
+        
+    return response_data
 
 @app.post("/api/auth/reset-password")
 def reset_password(payload: ResetPasswordSchema, db: Session = Depends(get_db)):
