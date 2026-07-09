@@ -11,7 +11,10 @@ else:
 
 class Settings:
     PROJECT_NAME: str = "Levitate Voice Scheduling Assistant"
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./levitate.db")
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite:////tmp/levitate.db" if os.getenv("VERCEL") else "sqlite:///./levitate.db"
+    )
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
