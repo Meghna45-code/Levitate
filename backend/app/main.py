@@ -116,7 +116,10 @@ async def log_user_interaction(request, call_next):
 # Startup background task initialization
 @app.on_event("startup")
 async def startup_event():
-    asyncio.create_task(periodic_autofill_worker())
+    # Only spawn the infinite periodic worker in local/non-serverless environments
+    if not os.getenv("VERCEL"):
+        asyncio.create_task(periodic_autofill_worker())
+
 
 # Helper function to get or create a default test user
 def get_default_user(db: Session) -> User:
