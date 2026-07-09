@@ -111,15 +111,53 @@ async def log_user_interaction(request, call_next):
             pass
     return response
 
+# Database initialization status
+db_error = None
+
 # Startup background task initialization
 @app.on_event("startup")
 async def startup_event():
-    # Initialize database tables
-    Base.metadata.create_all(bind=engine)
+    global db_error
+    try:
+        # Initialize database tables at runtime
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        import traceback
+        import sys
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import sessionmaker
+        
+        db_error = str(e)
+        tb = traceback.format_exc()
+        print(f"DATABASE INITIALIZATION ERROR: {e}\n{tb}", file=sys.stderr)
+        
+        # Fallback to an in-memory SQLite database to prevent Vercel 500 crash
+        try:
+            fallback_engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
+            Base.metadata.create_all(bind=fallback_engine)
+            
+            # Patch engine and SessionLocal in db module
+            import backend.app.db as db_mod
+            db_mod.engine = fallback_engine
+            db_mod.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=fallback_engine)
+            print("Successfully initialized in-memory fallback database.", file=sys.stderr)
+        except Exception as fallback_err:
+            print(f"CRITICAL: Failed to initialize in-memory fallback database: {fallback_err}", file=sys.stderr)
     
     # Only spawn the infinite periodic worker in local/non-serverless environments
     if not os.getenv("VERCEL"):
         asyncio.create_task(periodic_autofill_worker())
+
+@app.get("/api/db-status")
+def get_db_status():
+    global db_error
+    if db_error:
+        return {
+            "status": "error",
+            "message": "Database connection failed. App is running in fallback memory mode.",
+            "detail": db_error
+        }
+    return {"status": "success", "message": "Database connected successfully."}
 
 
 # Helper function to get or create a default test user

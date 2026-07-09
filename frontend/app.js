@@ -326,6 +326,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dashboard Data Loading
     async function loadDashboardData() {
+        // Check database connection status
+        try {
+            const dbRes = await fetch(`${API_BASE}/api/db-status`);
+            if (dbRes.ok) {
+                const dbData = await dbRes.json();
+                if (dbData.status === 'error') {
+                    showToast(`Fallback Database Active: ${dbData.message}`, 'error');
+                    console.error('Database connection failed:', dbData.detail);
+                }
+            }
+        } catch (dbErr) {
+            console.error('Failed to verify database status:', dbErr);
+        }
+
         if (!state.user) {
             // Attempt to restore user from storage
             const stored = localStorage.getItem('levitate_user');
