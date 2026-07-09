@@ -30,4 +30,9 @@ class Settings:
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
     SMTP_SENDER: str = os.getenv("SMTP_SENDER", "")
 
+    def __init__(self):
+        # Resolve SQLAlchemy postgres:// schema issue (SQLAlchemy 1.4+ expects postgresql://)
+        if self.DATABASE_URL.startswith("postgres://"):
+            self.DATABASE_URL = self.DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 settings = Settings()
