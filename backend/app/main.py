@@ -71,8 +71,6 @@ class TextInputSchema(BaseModel):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 frontend_dir = os.path.join(BASE_DIR, "frontend")
 
-# Initialize database tables
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -116,6 +114,9 @@ async def log_user_interaction(request, call_next):
 # Startup background task initialization
 @app.on_event("startup")
 async def startup_event():
+    # Initialize database tables
+    Base.metadata.create_all(bind=engine)
+    
     # Only spawn the infinite periodic worker in local/non-serverless environments
     if not os.getenv("VERCEL"):
         asyncio.create_task(periodic_autofill_worker())
